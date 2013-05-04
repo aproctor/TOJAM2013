@@ -20,7 +20,7 @@ public class PlatformManager : MonoBehaviour {
 			objectQueue.Enqueue((Transform)Instantiate(prefab));
 		}
 		
-		firstObject = false;
+		firstObject = true;
 		
 		nextPosition = transform.localPosition;
 		for(int i = 0; i < numberOfObjects; i++){
@@ -51,6 +51,14 @@ public class PlatformManager : MonoBehaviour {
 		Vector3 position = nextPosition;
 		position.x += scale.x * 0.5f;
 		position.y += scale.y * 0.5f;
+		
+		if(position.y < minY){
+			position.y = minY + maxGap.y;
+		}
+		else if(position.y > maxY){
+			position.y = maxY - maxGap.y;
+		}
+		
 
 		Transform o = objectQueue.Dequeue();
 		o.localScale = scale;

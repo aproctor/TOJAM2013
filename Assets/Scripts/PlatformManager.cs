@@ -9,10 +9,11 @@ public class PlatformManager : MonoBehaviour {
 	public Vector3 minSize, maxSize, minGap, maxGap;
 	public float minY, maxY;
 	public int firstPlatformLength;
+	public int firstPlatformY;
 
 	private Vector3 nextPosition;
 	private Queue<Transform> objectQueue;
-	private bool firstObject = true;
+	private bool firstObject = true;	
 
 	void Start () {
 		objectQueue = new Queue<Transform>(numberOfObjects);
@@ -40,17 +41,19 @@ public class PlatformManager : MonoBehaviour {
 			Random.Range(minSize.y, maxSize.y),
 			Random.Range(minSize.z, maxSize.z));
 		
+		Vector3 position = nextPosition;
+		position.x += scale.x * 0.5f;
+		position.y += scale.y * 0.5f;
+		
 		if(firstObject) {
 			scale = new Vector3(
 			firstPlatformLength,
 			Random.Range(minSize.y, maxSize.y),
 			Random.Range(minSize.z, maxSize.z));
 			firstObject = false;
+			
+			position.y = firstPlatformY;
 		}
-
-		Vector3 position = nextPosition;
-		position.x += scale.x * 0.5f;
-		position.y += scale.y * 0.5f;
 		
 		if(position.y < minY){
 			position.y = minY + maxGap.y;

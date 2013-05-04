@@ -20,7 +20,25 @@ public class SkylineManager : MonoBehaviour {
 		for(int i = 0; i < numberOfObjects; i++){
 			Recycle();
 		}
+		
+		enabled = false;
+		GameEventManager.GameStart += GameStart;
+		GameEventManager.GameOver += GameOver;
 	}
+	
+	private void GameStart () {
+		
+		nextPosition = transform.localPosition;
+		for(int i = 0; i < numberOfObjects; i++){
+			Recycle();
+		}
+		enabled = true;
+	}
+
+	private void GameOver () {
+		enabled = false;
+	}
+	
 
 	void Update () {
 		if(objectQueue.Peek().localPosition.x + recycleOffset < Runner.distanceTraveled){

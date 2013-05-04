@@ -16,6 +16,9 @@ public class PlatformManager : MonoBehaviour {
 	private bool firstObject = true;	
 
 	void Start () {
+		GameEventManager.GameStart += GameStart;
+		GameEventManager.GameOver += GameOver;
+		
 		objectQueue = new Queue<Transform>(numberOfObjects);
 		for(int i = 0; i < numberOfObjects; i++){
 			objectQueue.Enqueue((Transform)Instantiate(prefab));
@@ -27,6 +30,19 @@ public class PlatformManager : MonoBehaviour {
 		for(int i = 0; i < numberOfObjects; i++){
 			Recycle();
 		}
+	}
+	
+	private void GameStart () {
+		firstObject = true;
+		nextPosition = transform.localPosition;
+		for(int i = 0; i < numberOfObjects; i++){
+			Recycle();
+		}
+		enabled = true;
+	}
+
+	private void GameOver () {
+		enabled = false;
 	}
 
 	void Update () {

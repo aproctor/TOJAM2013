@@ -8,19 +8,27 @@ public class Runner : MonoBehaviour {
 	public float acceleration;
 	public Vector3 jumpVelocity;
 	public int maxJumps;
-	public float gameOverY;
+	public float gameOverY = -10;
+	public int minWeight = 180;
+	public int maxWeight = 600;
+	public int flyWeight = 400;
+	
+	public Transform playerSkin;
 
 	private bool touchingPlatform;
 	private int jumpCount = 0;
 	private Vector3 startPosition;
+	private int weight = 0;
 	
 	private enum playerStates {Idle, Running, Dead};
 	private playerStates playerState;
+	private Vector3 initialScale;
 
 	void Start () {
 		GameEventManager.GameStart += GameStart;
 		startPosition = transform.localPosition;
 		playerState = playerStates.Idle;
+		initialScale = playerSkin.localScale;
 	}	
 		
 	private void GameStart () {
@@ -29,6 +37,7 @@ public class Runner : MonoBehaviour {
 		rigidbody.isKinematic = false;
 		enabled = true;
 		jumpCount = 0;
+		weight = minWeight;
 		playerState = playerStates.Running;
 	}
 
@@ -47,9 +56,15 @@ public class Runner : MonoBehaviour {
 			int score = (int)(distanceTraveled * 100 / 100);
 			GUIManager.SetScoreText(score);
 			
+			GUIManager.SetWeightText(weight);
+			
 			if(transform.localPosition.y < gameOverY){
 				GameEventManager.TriggerGameOver();
-			}			
+			}	
+			
+			float weightProportion = ((float)(weight - minWeight) / (maxWeight - minWeight));
+			
+			playerSkin.localScale = Vector3.Scale(initialScale, new Vector3((1.0f + weightProportion), (1.0f + weightProportion * 0.20f), (1.0f + weightProportion)));
 		}
 	}
 	
@@ -64,7 +79,7 @@ public class Runner : MonoBehaviour {
 			canJump = true;
 		} else if(jumpCount < maxJumps) {
 			canJump = true;
-			//TODO super power
+			Super (100);
 		}
 		if(canJump) {
 			rigidbody.AddForce(jumpVelocity, ForceMode.VelocityChange);
@@ -72,6 +87,13 @@ public class Runner : MonoBehaviour {
 		} else {
 			Debug.Log("D'Oh");
 			//Jump fail
+		}
+	}
+	
+	void Super(int cost) {
+		this.weight += cost;
+		if(this.weight > this.maxWeight) {
+			this.weight = this.maxWeight;
 		}
 	}
 

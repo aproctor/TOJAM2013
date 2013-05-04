@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GUIManager : MonoBehaviour {
 
-	public GUIText gameOverText, instructionsText, titleText, scoreText;
+	public GUIText gameOverText, instructionsText, titleText, scoreText, weightText;
 	
 	private static GUIManager instance;
 	
@@ -13,6 +13,7 @@ public class GUIManager : MonoBehaviour {
 		GameEventManager.GameOver += GameOver;
 		gameOverText.enabled = false;
 		scoreText.enabled = false;
+		weightText.enabled = false;
 	}
 
 	void Update () {
@@ -26,6 +27,7 @@ public class GUIManager : MonoBehaviour {
 		instructionsText.enabled = false;
 		titleText.enabled = false;
 		scoreText.enabled = true;
+		weightText.enabled = true;
 		enabled = false;
 	}
 
@@ -37,5 +39,9 @@ public class GUIManager : MonoBehaviour {
 	
 	public static void SetScoreText(float score){
 		instance.scoreText.text = score.ToString("f0");
+	}
+	
+	public static void SetWeightText(int weight){
+		instance.weightText.text = weight.ToString("0 lbs");
 	}
 }

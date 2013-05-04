@@ -18,6 +18,7 @@ public class Runner : MonoBehaviour {
 
 	private bool touchingPlatform;
 	private int jumpCount = 0;
+	private int slamCount = 0;
 	private Vector3 startPosition;
 	private int weight = 0;
 	
@@ -39,6 +40,7 @@ public class Runner : MonoBehaviour {
 		rigidbody.isKinematic = false;
 		enabled = true;
 		jumpCount = 0;
+		slamCount = 0;
 		weight = minWeight;
 		playerState = playerStates.Running;
 	}
@@ -53,7 +55,14 @@ public class Runner : MonoBehaviour {
 		if(playerState == playerStates.Running) {
 			if(Input.GetButtonDown("Jump")){
 				Jump();
-			}		
+			}
+			if(Input.GetButtonDown("Vertical")){	
+				if(Input.GetAxis("Vertical") < 0) {
+					Slam ();
+				} else if(Input.GetAxis("Vertical") > 0) {
+					Jump ();
+				}
+			}
 			distanceTraveled = transform.localPosition.x;
 			int score = (int)(distanceTraveled * 100 / 100);
 			GUIManager.SetScoreText(score);
@@ -70,6 +79,23 @@ public class Runner : MonoBehaviour {
 		}
 	}
 	
+	private void Slam() {
+		
+		var canSlam = false;
+		if(touchingPlatform == false && slamCount < 1) {
+			canSlam = true;
+		}
+		if(canSlam) {
+			Debug.Log ("SLAMAJAMA!");
+			Super (10);
+			rigidbody.AddForce(new Vector3(10.0f, -20.0f, 0.0f), ForceMode.VelocityChange);
+			slamCount += 1;
+		} else {
+			Debug.Log("D'Oh");
+			//Jump fail
+		}
+	}
+	
 	private void Jump() {
 		if(distanceTraveled < 0.5) {
 			
@@ -77,14 +103,16 @@ public class Runner : MonoBehaviour {
 			return;
 		}
 		var canJump = false;
+		Vector3 jumpVel = this.jumpVelocity;
 		if(touchingPlatform) {
 			canJump = true;
 		} else if(jumpCount < maxJumps) {
 			canJump = true;
 			Super (100);
+			jumpVel = Vector3.Scale(new Vector3(1.05f, 1.4f, 1.0f), jumpVelocity);
 		}
 		if(canJump) {
-			rigidbody.AddForce(jumpVelocity, ForceMode.VelocityChange);
+			rigidbody.AddForce(jumpVel, ForceMode.VelocityChange);
 			jumpCount += 1;
 		} else {
 			Debug.Log("D'Oh");
@@ -98,11 +126,21 @@ public class Runner : MonoBehaviour {
 			this.weight = this.maxWeight;
 		}
 	}
+	
+	void LoseWeight(int amt) {
+		this.weight -= amt;
+		if(this.weight < this.minWeight) {
+			this.weight = this.minWeight;
+		}
+	}
 
 	void FixedUpdate () {
 		if(playerState == playerStates.Running) {
 			if(touchingPlatform){
-				rigidbody.AddForce(acceleration / (1.0f + weightProportion * 5), 0f, 0f, ForceMode.Acceleration);
+				rigidbody.AddForce(acceleration / (1.0f + weightProportion * 2), 0f, 0f, ForceMode.Acceleration);
+				
+				Debug.Log(Time.deltaTime);
+				LoseWeight((int)(100.0f * Time.deltaTime));
 			}
 		}
 	}
@@ -114,6 +152,7 @@ public class Runner : MonoBehaviour {
 		if(normal.x > -1.0f && normal.y > -1.0f) {
 	    	touchingPlatform = true;
 			jumpCount = 0;
+			slamCount = 0;
 		}
 	}
 

@@ -12,6 +12,7 @@ public class Runner : MonoBehaviour {
 	public int minWeight = 180;
 	public int maxWeight = 600;
 	public int flyWeight = 400;
+	public float minSpeed = 0.0f;
 	
 	public Transform playerSkin;
 
@@ -23,6 +24,7 @@ public class Runner : MonoBehaviour {
 	private enum playerStates {Idle, Running, Dead};
 	private playerStates playerState;
 	private Vector3 initialScale;
+	private float weightProportion = 1.0f;
 
 	void Start () {
 		GameEventManager.GameStart += GameStart;
@@ -62,7 +64,7 @@ public class Runner : MonoBehaviour {
 				GameEventManager.TriggerGameOver();
 			}	
 			
-			float weightProportion = ((float)(weight - minWeight) / (maxWeight - minWeight));
+			weightProportion = ((float)(weight - minWeight) / (maxWeight - minWeight));
 			
 			playerSkin.localScale = Vector3.Scale(initialScale, new Vector3((1.0f + weightProportion), (1.0f + weightProportion * 0.20f), (1.0f + weightProportion)));
 		}
@@ -100,7 +102,7 @@ public class Runner : MonoBehaviour {
 	void FixedUpdate () {
 		if(playerState == playerStates.Running) {
 			if(touchingPlatform){
-				rigidbody.AddForce(acceleration, 0f, 0f, ForceMode.Acceleration);
+				rigidbody.AddForce(acceleration / (1.0f + weightProportion * 5), 0f, 0f, ForceMode.Acceleration);
 			}
 		}
 	}

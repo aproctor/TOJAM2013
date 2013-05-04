@@ -44,6 +44,8 @@ public class Runner : MonoBehaviour {
 				Jump();
 			}		
 			distanceTraveled = transform.localPosition.x;
+			int score = (int)(distanceTraveled * 100 / 100);
+			GUIManager.SetScoreText(score);
 			
 			if(transform.localPosition.y < gameOverY){
 				GameEventManager.TriggerGameOver();

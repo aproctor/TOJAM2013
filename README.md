@@ -7,6 +7,19 @@ Ideas:
 https://twitter.com/PeterMolydeux/status/234677255878615040
 Game in which you play a superhero but every time you use your powers you gradually gain weight.
 * http://catlikecoding.com/unity/tutorials/runner/
+* each ability adds weight, which slows you down
+* eventually will be too slow to make jumps
+* time spent not using powers will thin you out
+
+special abilities:
+ * double jump
+ * sprint
+ * fly
+ * wall smash
+
+Running after criminal? or away from disaster
+  * criminal would be harder to accomplish
+  * criminal would add win-state
 
 
 https://twitter.com/PeterMolydeux/status/230301810596917249

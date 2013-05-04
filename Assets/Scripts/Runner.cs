@@ -8,6 +8,7 @@ public class Runner : MonoBehaviour {
 	public float acceleration;
 	public Vector3 jumpVelocity;
 	public int maxJumps;
+	public float gameOverY;
 
 	private bool touchingPlatform;
 	private int jumpCount = 0;
@@ -43,6 +44,10 @@ public class Runner : MonoBehaviour {
 				Jump();
 			}		
 			distanceTraveled = transform.localPosition.x;
+			
+			if(transform.localPosition.y < gameOverY){
+				GameEventManager.TriggerGameOver();
+			}			
 		}
 	}
 	

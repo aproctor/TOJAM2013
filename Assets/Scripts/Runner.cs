@@ -54,7 +54,8 @@ public class Runner : MonoBehaviour {
 	}
 	
 	private void Jump() {
-		if(distanceTraveled < 5) {
+		if(distanceTraveled < 0.5) {
+			
 			//Too early to jump
 			return;
 		}
@@ -82,9 +83,14 @@ public class Runner : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter () {
-		touchingPlatform = true;
-		jumpCount = 0;
+	void OnCollisionEnter (Collision collision) {
+		Vector3 normal = collision.contacts[0].normal;
+		
+		//Don't reset the jump if the collision is with the side or the bottom of the collider
+		if(normal.x > -1.0f && normal.y > -1.0f) {
+	    	touchingPlatform = true;
+			jumpCount = 0;
+		}
 	}
 
 	void OnCollisionExit () {

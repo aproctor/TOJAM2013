@@ -8,15 +8,20 @@ public class PlatformManager : MonoBehaviour {
 	public float recycleOffset;
 	public Vector3 minSize, maxSize, minGap, maxGap;
 	public float minY, maxY;
+	public int firstPlatformLength;
 
 	private Vector3 nextPosition;
 	private Queue<Transform> objectQueue;
+	private bool firstObject = true;
 
 	void Start () {
 		objectQueue = new Queue<Transform>(numberOfObjects);
 		for(int i = 0; i < numberOfObjects; i++){
 			objectQueue.Enqueue((Transform)Instantiate(prefab));
 		}
+		
+		firstObject = false;
+		
 		nextPosition = transform.localPosition;
 		for(int i = 0; i < numberOfObjects; i++){
 			Recycle();
@@ -34,6 +39,14 @@ public class PlatformManager : MonoBehaviour {
 			Random.Range(minSize.x, maxSize.x),
 			Random.Range(minSize.y, maxSize.y),
 			Random.Range(minSize.z, maxSize.z));
+		
+		if(firstObject) {
+			scale = new Vector3(
+			firstPlatformLength,
+			Random.Range(minSize.y, maxSize.y),
+			Random.Range(minSize.z, maxSize.z));
+			firstObject = false;
+		}
 
 		Vector3 position = nextPosition;
 		position.x += scale.x * 0.5f;

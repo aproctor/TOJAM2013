@@ -9,6 +9,8 @@ TODO:
 * play particle effects on abilities and landing
 * sound effects
 * sound track (the tick?)
+* Splash Page Image
+* Add Ground
 
 
 

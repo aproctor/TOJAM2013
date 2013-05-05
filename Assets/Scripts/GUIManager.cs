@@ -4,6 +4,7 @@ using UnityEngine;
 public class GUIManager : MonoBehaviour {
 
 	public GUIText gameOverText, instructionsText, titleText, scoreText, weightText;
+	public GUITexture tweetImg;
 	
 	private static GUIManager instance;
 	
@@ -29,6 +30,7 @@ public class GUIManager : MonoBehaviour {
 		scoreText.enabled = true;
 		weightText.enabled = true;
 		enabled = false;
+		tweetImg.enabled = false;
 	}
 
 	private void GameOver () {

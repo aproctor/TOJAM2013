@@ -1,6 +1,17 @@
 TOJAM2013 - Scrap File:
 =========
 
+TODO:
+=========
+* texture buildings
+* texutre player
+* animate player running somehow
+* play particle effects on abilities and landing
+* sound effects
+* sound track (the tick?)
+
+
+
 Ideas:
 =========
 

@@ -15,6 +15,8 @@ public class GUIManager : MonoBehaviour {
 		gameOverText.enabled = false;
 		scoreText.enabled = false;
 		weightText.enabled = false;
+		instructionsText.enabled = false;
+		titleText.enabled = false;
 	}
 
 	void Update () {

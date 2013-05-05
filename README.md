@@ -12,6 +12,9 @@ TODO:
 * Splash Page Image
 * Add Ground
 
+* tilt player skin relative to their speed
+* make player body collider adjust to match skin
+
 
 
 Ideas:

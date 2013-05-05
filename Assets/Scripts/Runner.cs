@@ -119,10 +119,9 @@ public class Runner : MonoBehaviour {
 		if(canJump) {
 			rigidbody.AddForce(jumpVel, ForceMode.VelocityChange);
 			jumpCount += 1;
-			//GameObject effect = (GameObject)Instantiate(jumpEffect);
-			//Debug.Log(effect);
-			//effect.transform.position = this.transform.localPosition + new Vector3(0.0f,-2.0f,0.0f);
-			//effect.particleSystem.Play();
+			
+			Transform effect = (Transform)Instantiate(jumpEffect);
+			effect.position = this.transform.localPosition + new Vector3(0.0f,0.0f,0.0f);
 			
 		} else {
 			Debug.Log("D'Oh");

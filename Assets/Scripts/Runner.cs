@@ -15,8 +15,10 @@ public class Runner : MonoBehaviour {
 	public float weightLossPerSecond = 20.0f;
 	public float minSpeed = 0.0f;
 	
+	public Transform playerBody;
 	public Transform playerSkin;
 	public Transform jumpEffect;
+	public Transform landEffect;
 
 	private bool touchingPlatform;
 	private int jumpCount = 0;
@@ -79,6 +81,20 @@ public class Runner : MonoBehaviour {
 				LoseWeight();
 			}
 			
+			/*
+			 * Rotate the player body based on momentum
+			 */
+			float minRotation = -15.0f;
+			float maxRotation = 15.0f;
+			float curSpeedRotation = (float) rigidbody.velocity.x;
+			if(curSpeedRotation < minRotation) {
+				curSpeedRotation = minRotation;
+			} else if(curSpeedRotation > maxRotation) {
+				curSpeedRotation = maxRotation;
+			}
+			playerBody.Rotate(Vector3.Scale(Vector3.up,new Vector3(curSpeedRotation, 0.0f, 0.0f)));
+			
+			
 			weightProportion = ((float)(weight - minWeight) / (maxWeight - minWeight));
 			
 			playerSkin.localScale = Vector3.Scale(initialScale, new Vector3((1.0f + weightProportion), (1.0f + weightProportion * 0.20f), (1.0f + weightProportion)));
@@ -121,7 +137,7 @@ public class Runner : MonoBehaviour {
 			jumpCount += 1;
 			
 			Transform effect = (Transform)Instantiate(jumpEffect);
-			effect.position = this.transform.localPosition + new Vector3(0.0f,0.0f,0.0f);
+			effect.position = this.transform.localPosition;
 			
 		} else {
 			Debug.Log("D'Oh");
@@ -158,6 +174,12 @@ public class Runner : MonoBehaviour {
 		
 		//Don't reset the jump if the collision is with the side or the bottom of the collider
 		if(normal.x > -1.0f && normal.y > -1.0f) {
+			
+			if(distanceTraveled > 0.8) {
+				Transform effect = (Transform)Instantiate(landEffect);
+				effect.position = this.transform.localPosition + new Vector3(0.0f,0.0f,0.0f);	
+			}
+			
 	    	touchingPlatform = true;
 			jumpCount = 0;
 			slamCount = 0;

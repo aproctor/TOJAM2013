@@ -9,9 +9,10 @@ public class Runner : MonoBehaviour {
 	public Vector3 jumpVelocity;
 	public int maxJumps;
 	public float gameOverY = -10;
-	public int minWeight = 180;
-	public int maxWeight = 600;
-	public int flyWeight = 400;
+	public float minWeight = 180.0f;
+	public float maxWeight = 600.0f;
+	public float flyWeight = 400.0f;
+	public float weightLossPerSecond = 20.0f;
 	public float minSpeed = 0.0f;
 	
 	public Transform playerSkin;
@@ -20,7 +21,7 @@ public class Runner : MonoBehaviour {
 	private int jumpCount = 0;
 	private int slamCount = 0;
 	private Vector3 startPosition;
-	private int weight = 0;
+	private float weight = 0.0f;
 	
 	private enum playerStates {Idle, Running, Dead};
 	private playerStates playerState;
@@ -67,11 +68,15 @@ public class Runner : MonoBehaviour {
 			int score = (int)(distanceTraveled * 100 / 100);
 			GUIManager.SetScoreText(score);
 			
-			GUIManager.SetWeightText(weight);
+			GUIManager.SetWeightText((int)weight);
 			
 			if(transform.localPosition.y < gameOverY){
 				GameEventManager.TriggerGameOver();
-			}	
+			}
+			
+			if(touchingPlatform) {
+				LoseWeight();
+			}
 			
 			weightProportion = ((float)(weight - minWeight) / (maxWeight - minWeight));
 			
@@ -86,13 +91,12 @@ public class Runner : MonoBehaviour {
 			canSlam = true;
 		}
 		if(canSlam) {
-			Debug.Log ("SLAMAJAMA!");
 			Super (10);
 			rigidbody.AddForce(new Vector3(10.0f, -20.0f, 0.0f), ForceMode.VelocityChange);
 			slamCount += 1;
 		} else {
 			Debug.Log("D'Oh");
-			//Jump fail
+			//Slam fail
 		}
 	}
 	
@@ -127,7 +131,9 @@ public class Runner : MonoBehaviour {
 		}
 	}
 	
-	void LoseWeight(int amt) {
+	void LoseWeight() {
+		float amt = weightLossPerSecond * Time.deltaTime;
+		
 		this.weight -= amt;
 		if(this.weight < this.minWeight) {
 			this.weight = this.minWeight;
@@ -138,9 +144,6 @@ public class Runner : MonoBehaviour {
 		if(playerState == playerStates.Running) {
 			if(touchingPlatform){
 				rigidbody.AddForce(acceleration / (1.0f + weightProportion * 2), 0f, 0f, ForceMode.Acceleration);
-				
-				Debug.Log(Time.deltaTime);
-				LoseWeight((int)(100.0f * Time.deltaTime));
 			}
 		}
 	}

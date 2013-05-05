@@ -3,14 +3,14 @@ TOJAM2013 - Scrap File:
 
 TODO:
 =========
-* texture buildings
-* texutre player
-* animate player running somehow
 * sound effects
 * sound track (the tick?)
 * Splash Page Image
 * Add Ground Texture
+* animate player running somehow
 
+* texture buildings
+* texutre player
 * make player body collider adjust to match skin
 
 

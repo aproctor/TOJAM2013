@@ -8,6 +8,9 @@ public class GUIManager : MonoBehaviour {
 	
 	private static GUIManager instance;
 	
+	private enum GUIState { Started, Playing, Over };
+	private GUIState guiState;
+	
 	void Start () {
 		instance = this;
 		GameEventManager.GameStart += GameStart;
@@ -17,11 +20,16 @@ public class GUIManager : MonoBehaviour {
 		weightText.enabled = false;
 		instructionsText.enabled = false;
 		titleText.enabled = false;
+		guiState = GUIState.Started;	
 	}
 
 	void Update () {
 		if(Input.GetButtonDown("Jump")){
-			GameEventManager.TriggerGameStart();
+			if(guiState == GUIState.Started) {
+				GameEventManager.TriggerGameStart();
+			} else {
+				GameEventManager.TriggerGameStart();
+			}
 		}
 	}
 
@@ -33,12 +41,14 @@ public class GUIManager : MonoBehaviour {
 		weightText.enabled = true;
 		enabled = false;
 		tweetImg.enabled = false;
+		guiState = GUIState.Playing;
 	}
 
 	private void GameOver () {
 		gameOverText.enabled = true;
 		instructionsText.enabled = true;
 		enabled = true;
+		guiState = GUIState.Over;
 	}
 	
 	public static void SetScoreText(float score){

@@ -92,7 +92,7 @@ public class Runner : MonoBehaviour {
 			} else if(curSpeedRotation > maxRotation) {
 				curSpeedRotation = maxRotation;
 			}
-			playerBody.Rotate(Vector3.Scale(Vector3.up,new Vector3(curSpeedRotation, 0.0f, 0.0f)));
+			playerBody.localEulerAngles = new Vector3(0.0f, 0.0f, -1.0f * curSpeedRotation);
 			
 			
 			weightProportion = ((float)(weight - minWeight) / (maxWeight - minWeight));
@@ -173,8 +173,7 @@ public class Runner : MonoBehaviour {
 		Vector3 normal = collision.contacts[0].normal;
 		
 		//Don't reset the jump if the collision is with the side or the bottom of the collider
-		if(normal.x > -1.0f && normal.y > -1.0f) {
-			
+		if(normal.x > -1.0f && normal.y > -1.0f) {			
 			if(distanceTraveled > 0.8) {
 				Transform effect = (Transform)Instantiate(landEffect);
 				effect.position = this.transform.localPosition + new Vector3(0.0f,0.0f,0.0f);	

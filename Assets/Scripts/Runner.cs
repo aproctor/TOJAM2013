@@ -14,6 +14,8 @@ public class Runner : MonoBehaviour {
 	public float flyWeight = 400.0f;
 	public float weightLossPerSecond = 20.0f;
 	public float minSpeed = 0.0f;
+	public float minRotation = -15.0f;
+	public float maxRotation = 15.0f;
 	
 	public Transform playerBody;
 	public Transform playerSkin;
@@ -84,8 +86,6 @@ public class Runner : MonoBehaviour {
 			/*
 			 * Rotate the player body based on momentum
 			 */
-			float minRotation = -15.0f;
-			float maxRotation = 15.0f;
 			float curSpeedRotation = (float) rigidbody.velocity.x;
 			if(curSpeedRotation < minRotation) {
 				curSpeedRotation = minRotation;

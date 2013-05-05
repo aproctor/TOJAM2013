@@ -5,7 +5,6 @@ TODO:
 =========
 * sound effects
 * sound track (the tick?)
-* Splash Page Image
 * Add Ground Texture
 * animate player running somehow
 

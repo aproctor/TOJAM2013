@@ -91,7 +91,7 @@ public class Runner : MonoBehaviour {
 			canSlam = true;
 		}
 		if(canSlam) {
-			Super (10);
+			Super (50);
 			rigidbody.AddForce(new Vector3(10.0f, -20.0f, 0.0f), ForceMode.VelocityChange);
 			slamCount += 1;
 		} else {

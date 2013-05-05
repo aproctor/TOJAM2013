@@ -6,13 +6,11 @@ TODO:
 * texture buildings
 * texutre player
 * animate player running somehow
-* play particle effects on abilities and landing
 * sound effects
 * sound track (the tick?)
 * Splash Page Image
-* Add Ground
+* Add Ground Texture
 
-* tilt player skin relative to their speed
 * make player body collider adjust to match skin
 
 
